@@ -60,6 +60,8 @@ $api->version('v1', [
         'middleware' => 'api.throttle',
         'limit' => config('api.rate_limits.sign.limit'),
         'expires' => config('api.rate_limits.sign.expires'),
+//        'limit' => 1,
+//        'expires' => 1,
     ], function($api) {
         // 短信验证码
         $api->post('verificationCodes', 'VerificationCodesController@store')
