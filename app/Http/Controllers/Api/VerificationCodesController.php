@@ -10,8 +10,16 @@ class VerificationCodesController extends Controller
 {
     public function store(VerificationCodeRequest $request, EasySms $easySms)
     {
-//        return $this->response()->array(['test_message' => 'store verification code']);
-        $phone = $request->phone;
+        $captchaData = \Cache::get($request->captcha_key);
+        if (!$captchaData) {
+            return $this->response()->error('验证码失效', 422);
+        }
+
+        if (!hash_equals($captchaData['code'], $request->captcha_code)) {
+            return $this->response->errorUnauthorized('验证码不正确');
+        }
+//        $phone = $request->phone;//不用验证码的时候，电话这样获取，验证码的话，需要从缓存中获取
+        $phone = $captchaData['phone'];
 
 //        if (!app()->environment('production')) {//app 要加（）,其次是没有 $ 美元符号
 //            $code = '12345';

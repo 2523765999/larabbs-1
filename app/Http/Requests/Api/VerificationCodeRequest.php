@@ -23,12 +23,25 @@ class VerificationCodeRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        /*return [
             'phone' => [
                 'required',
                 'regex:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199)\d{8}$/',
                 'unique:users'
             ]
+        ];*/
+        //上面的是没有调用验证码的过程，
+        return [
+            'captcha_key' => 'required|string',
+            'captcha_code' => 'required|string'
+        ];
+    }
+
+    public function attributes()//没有验证码的时候，不需要这个方法
+    {
+        return [
+            'captcha_key' => '图片验证码key',
+            'captcha_code' => '图片验证码'
         ];
     }
 }
