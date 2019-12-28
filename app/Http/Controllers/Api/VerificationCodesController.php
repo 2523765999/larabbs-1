@@ -16,6 +16,7 @@ class VerificationCodesController extends Controller
         }
 
         if (!hash_equals($captchaData['code'], $request->captcha_code)) {
+            \Cache::forget($request->captcha_key);
             return $this->response->errorUnauthorized('验证码不正确');
         }
 //        $phone = $request->phone;//不用验证码的时候，电话这样获取，验证码的话，需要从缓存中获取
